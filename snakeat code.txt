@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+#define int long long
+#define ll long long
+#define maxN 100005
+#define rep(i,n) for(int i=0;i<n;i++)
+#define refv(i,l,r) for(int i=l;i<r;i++)
+#define rerv(i,l,r) for(int i=l;i>r;i--)
+#define pi pair<ll,ll>
+#define pii pair<ll,pair<ll,ll> >
+#define pb push_back
+#define mp make_pair
+#define F first
+#define S second
+#define mod 1000000007
+#define printvector(v) for(int i= 0;i<v.size();i++) {cout<<v[i]<<" ";} cout<<endl;
+#define printset(s) for(auto it = s.begin();it!=S.end();it++){cout<<*it<<" ";} cout<<endl;
+#define fastio ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+//#include <ext/pb_ds/assoc_container.hpp>
+//#include <ext/pb_ds/tree_policy.hpp>
+//using namespace __gnu_pbds;
+
+//#define ordered_set tree<int, null_type,less<int>, rb_tree_tag,tree_order_statistics_node_update>
+string convertupper(string s)
+{
+    transform(s.begin(), s.end(), s.begin(), ::toupper);
+    return s;
+}
+string convertlower(string s)
+{
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+    return s;
+}
+int sum[maxN];
+bool check(int mid,int sum[],int x,int k)
+{
+
+    int s=k*(x-mid+1)-(sum[x+1]-sum[mid]);
+    //cout<<s<<endl;
+    if(mid>=s)
+        return true;
+    return false;
+
+}
+int32_t main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n,q;
+        cin>>n>>q;
+        vector<int > v(n);
+        memset(sum,0,sizeof(0));
+        rep(i,n)
+        {
+            cin>>v[i];
+
+        }
+        sort(v.begin(),v.end());
+        rep(i,n)
+        {
+            sum[i+1]=v[i];
+                sum[i+1]+=sum[i];
+        }
+        while(q--)
+        {
+            int ans=0;
+            int k;
+            cin>>k;
+            int x=lower_bound(v.begin(),v.end(),k)-v.begin();
+            ans+=n-x;
+           // cout<<ans<<endl;
+            int l=0,h=x-1;
+            int temp=0;
+            while(l<=h)
+            {
+                int mid=(l+h)/2;
+                if(check(mid,sum,x-1,k))
+                {
+                    temp=max(temp,x-mid);
+                    h=mid-1;
+                }
+                else
+                {
+                    l=mid+1;
+                }
+            }
+            ans+=temp;
+            cout<<ans<<endl;
+        }
+    }
+   
+}
